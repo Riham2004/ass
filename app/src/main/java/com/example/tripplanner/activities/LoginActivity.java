@@ -32,10 +32,10 @@ public class LoginActivity extends AppCompatActivity {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
             } else {
-                // حالياً بدون تحقق حقيقي، مجرد انتقال
+
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish(); // عشان ما يرجع للـ Login لما يضغط Back
+                finish();
             }
         });
     }

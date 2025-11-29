@@ -7,33 +7,33 @@ import java.util.UUID;
 public class Trip implements Serializable {
     private String id;
     private String name;
+    private String source;
     private String destination;
     private String startDate;
     private String endDate;
     private double budget;
-    private String tripType; // "Adventure", "Leisure", "Business"
+    private String tripType;
     private boolean isCompleted;
     private ArrayList<PackingItem> packingList;
     private String notes;
 
-    // ✅ جديد:
-    private String priority;     // "High", "Medium", "Low"
-    private int imageResId;      // R.drawable.ic_trip_default أو أي صورة ثابتة
+    private String priority;
+    private int imageResId;
 
-    // Constructor افتراضي (مطلوب لـ Gson)
     public Trip() {
         this.id = UUID.randomUUID().toString();
         this.packingList = new ArrayList<>();
         this.isCompleted = false;
         this.priority = "Medium";
-        this.imageResId = 0; // لاحقًا نضبطها في AddTripActivity
+        this.imageResId = 0;
     }
 
-    // Constructor مخصص
-    public Trip(String name, String destination, String startDate, String endDate,
+
+    public Trip(String name, String source, String destination, String startDate, String endDate,
                 double budget, String tripType, String priority, int imageResId) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
+        this.source = source;
         this.destination = destination;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -61,6 +61,14 @@ public class Trip implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getDestination() {
@@ -127,7 +135,6 @@ public class Trip implements Serializable {
         this.notes = notes;
     }
 
-    // ✅ جديد:
     public String getPriority() {
         return priority;
     }
@@ -151,6 +158,6 @@ public class Trip implements Serializable {
 
     @Override
     public String toString() {
-        return name + " - " + destination;
+        return name + " - " + source + " → " + destination;
     }
 }

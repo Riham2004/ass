@@ -82,14 +82,18 @@ public class TripManager {
         List<Trip> allTrips = loadTrips();
         List<Trip> results = new ArrayList<>();
         String lowerQuery = query.toLowerCase();
+
         for (Trip trip : allTrips) {
             if (trip.getName().toLowerCase().contains(lowerQuery) ||
-                    trip.getDestination().toLowerCase().contains(lowerQuery)) {
+                    trip.getDestination().toLowerCase().contains(lowerQuery) ||
+                    trip.getSource().toLowerCase().contains(lowerQuery)) {
                 results.add(trip);
             }
         }
+
         return results;
     }
+
 
     public List<Trip> filterByType(String tripType) {
         List<Trip> allTrips = loadTrips();

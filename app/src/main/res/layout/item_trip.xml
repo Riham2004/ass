@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- صورة الرحلة مع overlay -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardImage"
             android:layout_width="80dp"
@@ -33,7 +32,6 @@
                 android:scaleType="centerCrop"/>
         </androidx.cardview.widget.CardView>
 
-        <!-- اسم الرحلة -->
         <TextView
             android:id="@+id/tvTripName"
             android:layout_width="0dp"
@@ -49,14 +47,13 @@
             app:layout_constraintStart_toEndOf="@id/cardImage"
             app:layout_constraintEnd_toStartOf="@id/tvPriority"/>
 
-        <!-- الوجهة مع أيقونة -->
         <TextView
-            android:id="@+id/tvDestination"
+            android:id="@+id/tvSource"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:text="📍 Destination"
+            android:text="🚏 Source"
             android:textSize="14sp"
             android:textColor="#757575"
             android:maxLines="1"
@@ -65,21 +62,34 @@
             app:layout_constraintStart_toEndOf="@id/cardImage"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- التاريخ مع أيقونة -->
+        <TextView
+            android:id="@+id/tvDestination"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:text="Destination"
+            android:textSize="14sp"
+            android:textColor="#757575"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/tvSource"
+            app:layout_constraintStart_toEndOf="@id/cardImage"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            android:text="📅 Date"
+            android:text="Date"
             android:textSize="12sp"
             android:textColor="#9E9E9E"
             app:layout_constraintTop_toBottomOf="@id/tvDestination"
             app:layout_constraintStart_toEndOf="@id/cardImage"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- الأولوية - شارة جميلة -->
         <TextView
             android:id="@+id/tvPriority"
             android:layout_width="wrap_content"
@@ -96,7 +106,6 @@
             app:layout_constraintTop_toTopOf="@id/cardImage"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- شريط معلومات إضافية -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -107,7 +116,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- نوع الرحلة -->
             <TextView
                 android:id="@+id/tvTripType"
                 android:layout_width="0dp"
@@ -119,16 +127,14 @@
                 android:textStyle="bold"
                 android:drawablePadding="4dp"/>
 
-            <!-- Budget -->
             <TextView
                 android:id="@+id/tvBudget"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="💰 $500"
+                android:text="$500"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:textColor="#4CAF50"/>
-
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

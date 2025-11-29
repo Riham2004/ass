@@ -1,9 +1,5 @@
 package com.example.tripplanner.utils;
 
-/**
- * Centralized Constants Class
- * Contains all constant values used across the application
- */
 public class Constants {
 
     // Intent Keys
@@ -29,7 +25,7 @@ public class Constants {
     public static final String DEFAULT_PRIORITY = PRIORITY_MEDIUM;
     public static final String DEFAULT_TRIP_TYPE = TRIP_TYPE_LEISURE;
 
-    // Validation Messages
+    // Validation & Feedback Messages
     public static final String MSG_FILL_ALL_FIELDS = "Please fill all fields";
     public static final String MSG_TRIP_ADDED = "Trip added successfully";
     public static final String MSG_TRIP_UPDATED = "Trip updated successfully";
@@ -37,11 +33,11 @@ public class Constants {
     public static final String MSG_ITEM_ADDED = "Item added";
     public static final String MSG_ITEM_REMOVED = "Item removed";
     public static final String MSG_ENTER_ITEM_NAME = "Please enter item name";
+    public static final String MSG_NOTES_UPDATED = "Notes updated";
+    public static final String MSG_NO_NOTES = "No notes";
 
     // Private constructor to prevent instantiation
     private Constants() {
         throw new AssertionError("Cannot instantiate Constants class");
     }
-
-
 }

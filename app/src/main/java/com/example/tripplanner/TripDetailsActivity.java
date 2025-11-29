@@ -3,7 +3,6 @@ package com.example.tripplanner;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripplanner.utils.Constants;
-
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tripplanner.data.TripManager;
@@ -22,9 +19,9 @@ import com.example.tripplanner.models.Trip;
 
 public class TripDetailsActivity extends AppCompatActivity {
 
-    private TextView tvTripName, tvDestination, tvDates, tvTripType, tvBudget, tvStatus, tvNotes;
+    private TextView tvTripName, tvSource, tvDestination, tvDates, tvTripType, tvBudget, tvStatus, tvNotes;
     private EditText etPackingItem;
-    private Button btnAddItem, btnEdit, btnDelete;
+    private Button btnAddItem, btnEdit, btnDelete, btnEditNotes;
     private LinearLayout packingListContainer;
 
     private Trip currentTrip;
@@ -37,6 +34,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         // Initialize views
         tvTripName = findViewById(R.id.tvTripName);
+        tvSource = findViewById(R.id.tvSource);
         tvDestination = findViewById(R.id.tvDestination);
         tvDates = findViewById(R.id.tvDates);
         tvTripType = findViewById(R.id.tvTripType);
@@ -48,12 +46,12 @@ public class TripDetailsActivity extends AppCompatActivity {
         btnAddItem = findViewById(R.id.btnAddItem);
         btnEdit = findViewById(R.id.btnEdit);
         btnDelete = findViewById(R.id.btnDelete);
+        btnEditNotes = findViewById(R.id.btnEditNotes);
 
         packingListContainer = findViewById(R.id.packingListContainer);
 
         tripManager = new TripManager(this);
 
-        // Get trip from intent
         Intent intent = getIntent();
         String tripId = intent.getStringExtra(Constants.EXTRA_TRIP_ID);
 
@@ -65,18 +63,18 @@ public class TripDetailsActivity extends AppCompatActivity {
             }
         }
 
-        // Add packing item
         btnAddItem.setOnClickListener(v -> addPackingItem());
 
-        // Edit trip
         btnEdit.setOnClickListener(v -> editTrip());
 
-        // Delete trip
         btnDelete.setOnClickListener(v -> confirmDelete());
+
+        btnEditNotes.setOnClickListener(v -> editNotes());
     }
 
     private void displayTripDetails() {
         tvTripName.setText(currentTrip.getName());
+        tvSource.setText(currentTrip.getSource());
         tvDestination.setText(currentTrip.getDestination());
         tvDates.setText(currentTrip.getStartDate() + " → " + currentTrip.getEndDate());
         tvTripType.setText(currentTrip.getTripType());
@@ -84,7 +82,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         tvStatus.setText(currentTrip.isCompleted() ? "Confirmed ✓" : "Not Confirmed");
 
         String notes = currentTrip.getNotes();
-        tvNotes.setText(notes != null && !notes.isEmpty() ? notes : "No notes");
+        tvNotes.setText(notes != null && !notes.isEmpty() ? notes : Constants.MSG_NO_NOTES);
     }
 
     private void displayPackingList() {
@@ -111,7 +109,6 @@ public class TripDetailsActivity extends AppCompatActivity {
             tripManager.updateTrip(currentTrip);
         });
 
-        // Long press to delete item
         checkBox.setOnLongClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setTitle("Delete Item")
@@ -120,7 +117,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                         currentTrip.getPackingList().remove(position);
                         tripManager.updateTrip(currentTrip);
                         displayPackingList();
-                        Toast.makeText(this, "Item removed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, Constants.MSG_ITEM_REMOVED, Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Cancel", null)
                     .show();
@@ -134,7 +131,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         String itemName = etPackingItem.getText().toString().trim();
 
         if (itemName.isEmpty()) {
-            Toast.makeText(this, "Please enter item name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, Constants.MSG_ENTER_ITEM_NAME, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -144,13 +141,13 @@ public class TripDetailsActivity extends AppCompatActivity {
         etPackingItem.setText("");
         displayPackingList();
 
-        Toast.makeText(this, "Item added", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, Constants.MSG_ITEM_ADDED, Toast.LENGTH_SHORT).show();
     }
 
     private void editTrip() {
         Intent intent = new Intent(this, AddTripActivity.class);
-        intent.putExtra("TRIP_ID", currentTrip.getId());
-        intent.putExtra("EDIT_MODE", true);
+        intent.putExtra(Constants.EXTRA_TRIP_ID, currentTrip.getId());
+        intent.putExtra(Constants.EXTRA_EDIT_MODE, true);
         startActivity(intent);
         finish();
     }
@@ -161,19 +158,29 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to delete '" + currentTrip.getName() + "'?")
                 .setPositiveButton("Delete", (dialog, which) -> {
                     tripManager.deleteTrip(currentTrip.getId());
-                    Toast.makeText(this, "Trip deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, Constants.MSG_TRIP_DELETED, Toast.LENGTH_SHORT).show();
                     finish();
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (currentTrip != null) {
-            outState.putString(Constants.EXTRA_TRIP_ID, currentTrip.getId());
-        }
+    private void editNotes() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Notes");
+
+        final EditText input = new EditText(this);
+        input.setText(currentTrip.getNotes());
+        builder.setView(input);
+
+        builder.setPositiveButton("Save", (dialog, which) -> {
+            currentTrip.setNotes(input.getText().toString());
+            tripManager.updateTrip(currentTrip);
+            tvNotes.setText(currentTrip.getNotes());
+            Toast.makeText(this, Constants.MSG_NOTES_UPDATED, Toast.LENGTH_SHORT).show();
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.show();
     }
 
     @Override
@@ -194,7 +201,6 @@ public class TripDetailsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh trip data in case it was edited
         if (currentTrip != null) {
             currentTrip = tripManager.getTripById(currentTrip.getId());
             if (currentTrip != null) {

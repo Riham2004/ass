@@ -10,7 +10,6 @@ import android.widget.Switch;
 import android.widget.Toast;
 import com.example.tripplanner.utils.Constants;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tripplanner.data.TripManager;
@@ -21,9 +20,9 @@ import android.content.Intent;
 
 public class AddTripActivity extends AppCompatActivity {
 
-    private EditText etTripName, etDestination, etBudget, etNotes;
+    private EditText etTripName, etSource, etDestination, etBudget, etNotes;
     private Button btnStartDate, btnEndDate, btnSaveTrip;
-    private RadioGroup rgTripType, rgPriority;   // ✅ أضفنا RadioGroup للأولوية
+    private RadioGroup rgTripType, rgPriority;
     private Switch switchConfirmed;
 
     private String startDate = "";
@@ -34,14 +33,13 @@ public class AddTripActivity extends AppCompatActivity {
     private Trip editingTrip = null;
     private boolean isEditMode = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
 
-        // ربط العناصر
         etTripName = findViewById(R.id.etTripName);
+        etSource = findViewById(R.id.etSource);
         etDestination = findViewById(R.id.etDestination);
         etBudget = findViewById(R.id.etBudget);
         etNotes = findViewById(R.id.etNotes);
@@ -51,7 +49,7 @@ public class AddTripActivity extends AppCompatActivity {
         btnSaveTrip = findViewById(R.id.btnSaveTrip);
 
         rgTripType = findViewById(R.id.rgTripType);
-        rgPriority = findViewById(R.id.rgPriority);   // ✅ ربط RadioGroup للأولوية
+        rgPriority = findViewById(R.id.rgPriority);
         switchConfirmed = findViewById(R.id.switchConfirmed);
 
         tripManager = new TripManager(this);
@@ -79,6 +77,7 @@ public class AddTripActivity extends AppCompatActivity {
 
     private void fillFieldsForEdit() {
         etTripName.setText(editingTrip.getName());
+        etSource.setText(editingTrip.getSource());
         etDestination.setText(editingTrip.getDestination());
         etBudget.setText(String.valueOf(editingTrip.getBudget()));
         etNotes.setText(editingTrip.getNotes());
@@ -90,7 +89,6 @@ public class AddTripActivity extends AppCompatActivity {
 
         switchConfirmed.setChecked(editingTrip.isCompleted());
 
-        // Set trip type radio button
         String type = editingTrip.getTripType();
         if (type.equals("Adventure")) {
             rgTripType.check(R.id.rbAdventure);
@@ -100,7 +98,6 @@ public class AddTripActivity extends AppCompatActivity {
             rgTripType.check(R.id.rbBusiness);
         }
 
-        // ✅ ضبط الأولوية عند التعديل
         String priority = editingTrip.getPriority();
         if (priority.equals("High")) {
             rgPriority.check(R.id.rbHigh);
@@ -133,35 +130,34 @@ public class AddTripActivity extends AppCompatActivity {
 
     private void saveTrip() {
         String name = etTripName.getText().toString().trim();
+        String source = etSource.getText().toString().trim();
         String destination = etDestination.getText().toString().trim();
         String budgetStr = etBudget.getText().toString().trim();
         String notes = etNotes.getText().toString().trim();
 
-        if (name.isEmpty() || destination.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || budgetStr.isEmpty()) {
+        if (name.isEmpty() || source.isEmpty() || destination.isEmpty() || startDate.isEmpty() || endDate.isEmpty() || budgetStr.isEmpty()) {
             Toast.makeText(this, Constants.MSG_FILL_ALL_FIELDS, Toast.LENGTH_SHORT).show();
             return;
         }
 
         double budget = Double.parseDouble(budgetStr);
 
-        // Get trip type
         int selectedTypeId = rgTripType.getCheckedRadioButtonId();
         RadioButton selectedRadio = findViewById(selectedTypeId);
         String tripType = selectedRadio != null ? selectedRadio.getText().toString() : "Leisure";
 
-        // ✅ Get priority
         int selectedPriorityId = rgPriority.getCheckedRadioButtonId();
         RadioButton selectedPriorityRadio = findViewById(selectedPriorityId);
         String priority = selectedPriorityRadio != null ? selectedPriorityRadio.getText().toString() : "Medium";
 
         boolean confirmed = switchConfirmed.isChecked();
 
-        // صورة ثابتة افتراضية (ممكن تغيريها لاحقًا)
         int imageResId = R.drawable.ic_trip_default;
 
         if (isEditMode && editingTrip != null) {
             // Update existing trip
             editingTrip.setName(name);
+            editingTrip.setSource(source);
             editingTrip.setDestination(destination);
             editingTrip.setStartDate(startDate);
             editingTrip.setEndDate(endDate);
@@ -169,14 +165,14 @@ public class AddTripActivity extends AppCompatActivity {
             editingTrip.setTripType(tripType);
             editingTrip.setCompleted(confirmed);
             editingTrip.setNotes(notes);
-            editingTrip.setPriority(priority);   // ✅ تحديث الأولوية
+            editingTrip.setPriority(priority);
             editingTrip.setImageResId(imageResId);
 
             tripManager.updateTrip(editingTrip);
             Toast.makeText(this, "Trip updated successfully", Toast.LENGTH_SHORT).show();
         } else {
             // Add new trip
-            Trip trip = new Trip(name, destination, startDate, endDate, budget, tripType, priority, imageResId);
+            Trip trip = new Trip(name, source, destination, startDate, endDate, budget, tripType, priority, imageResId);
             trip.setCompleted(confirmed);
             trip.setNotes(notes);
 
@@ -191,6 +187,7 @@ public class AddTripActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("TRIP_NAME", etTripName.getText().toString());
+        outState.putString("SOURCE", etSource.getText().toString());
         outState.putString("DESTINATION", etDestination.getText().toString());
         outState.putString("START_DATE", startDate);
         outState.putString("END_DATE", endDate);
@@ -203,6 +200,7 @@ public class AddTripActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
             etTripName.setText(savedInstanceState.getString("TRIP_NAME"));
+            etSource.setText(savedInstanceState.getString("SOURCE"));
             etDestination.setText(savedInstanceState.getString("DESTINATION"));
             startDate = savedInstanceState.getString("START_DATE", "");
             endDate = savedInstanceState.getString("END_DATE", "");

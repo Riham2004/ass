@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- صورة الرحلة -->
         <ImageView
             android:id="@+id/imgTripDetails"
             android:layout_width="150dp"
@@ -31,6 +30,29 @@
             android:textStyle="bold"
             android:textColor="#6200EE"/>
 
+        <!-- Source -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Source: "
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tvSource"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="City"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+
         <!-- Destination -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,7 +63,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📍 Destination: "
+                android:text="Destination: "
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
@@ -63,7 +85,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="📅 Dates: "
+                android:text="Dates: "
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
@@ -85,7 +107,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🏷️ Type: "
+                android:text="Type: "
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
@@ -107,7 +129,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="💰 Budget: "
+                android:text="Budget: "
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
@@ -129,7 +151,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✅ Status: "
+                android:text="Status: "
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
@@ -151,7 +173,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⭐ Priority: "
+                android:text="Priority: "
                 android:textStyle="bold"
                 android:textSize="16sp"/>
 
@@ -167,7 +189,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="📝 Notes:"
+            android:text="Notes:"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginTop="16dp"/>
@@ -186,7 +208,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🎒 Packing List:"
+            android:text="Packing List:"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="24dp"/>
@@ -213,6 +235,11 @@
                 android:text="Add"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>
+        <Button
+            android:id="@+id/btnEditNotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Notes" />
 
         <!-- Packing List (CheckBoxes will be added dynamically) -->
         <LinearLayout

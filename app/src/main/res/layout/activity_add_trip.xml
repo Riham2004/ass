@@ -17,6 +17,15 @@
             android:layout_height="wrap_content"
             android:hint="Trip Name"/>
 
+        <!--  Source -->
+        <EditText
+            android:id="@+id/etSource"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Source"
+            android:layout_marginTop="8dp"/>
+
+
         <!-- Destination -->
         <EditText
             android:id="@+id/etDestination"
@@ -76,7 +85,7 @@
                 android:text="Business"/>
         </RadioGroup>
 
-        <!-- ✅ Priority -->
+        <!-- Priority -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

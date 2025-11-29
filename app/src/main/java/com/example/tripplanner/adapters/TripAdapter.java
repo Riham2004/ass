@@ -1,7 +1,6 @@
 package com.example.tripplanner.adapters;
 
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,17 +43,16 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         Trip trip = tripList.get(position);
 
         holder.tvName.setText(trip.getName());
+        holder.tvSource.setText(trip.getSource());
         holder.tvDestination.setText(trip.getDestination());
         holder.tvDate.setText(trip.getStartDate() + " - " + trip.getEndDate());
         holder.tvTripType.setText(trip.getTripType());
         holder.tvBudget.setText("$" + String.format("%.0f", trip.getBudget()));
         holder.tvPriority.setText(trip.getPriority());
 
-        // ✅ تغيير لون بسيط
         int color = getPriorityColor(trip.getPriority());
         holder.tvPriority.setBackgroundColor(color);
 
-        // صورة
         if (trip.getImageResId() != 0) {
             holder.imgTrip.setImageResource(trip.getImageResId());
         } else {
@@ -82,40 +80,27 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         notifyDataSetChanged();
     }
 
-    // Helper methods
     private int getPriorityColor(String priority) {
         switch (priority.toLowerCase()) {
             case "high":
-                return Color.parseColor("#E53935"); // أحمر
+                return Color.parseColor("#E53935");
             case "medium":
-                return Color.parseColor("#F9A825"); // أصفر
+                return Color.parseColor("#F9A825");
             case "low":
-                return Color.parseColor("#4CAF50"); // أخضر
+                return Color.parseColor("#4CAF50");
             default:
-                return Color.parseColor("#9E9E9E"); // رمادي
-        }
-    }
-
-    private String getTripTypeEmoji(String tripType) {
-        switch (tripType.toLowerCase()) {
-            case "adventure":
-                return "🏔️";
-            case "leisure":
-                return "🏖️";
-            case "business":
-                return "💼";
-            default:
-                return "✈️";
+                return Color.parseColor("#9E9E9E");
         }
     }
 
     static class TripViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvDestination, tvDate, tvPriority, tvTripType, tvBudget;
+        TextView tvName, tvSource, tvDestination, tvDate, tvPriority, tvTripType, tvBudget;
         ImageView imgTrip;
 
         public TripViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvTripName);
+            tvSource = itemView.findViewById(R.id.tvSource);
             tvDestination = itemView.findViewById(R.id.tvDestination);
             tvDate = itemView.findViewById(R.id.tvDate);
             tvPriority = itemView.findViewById(R.id.tvPriority);
